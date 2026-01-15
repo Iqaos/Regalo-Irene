@@ -23,3 +23,11 @@ function selectCity(city) {
 }
 let selectedStartDate = "";
 let selectedEndDate = "";
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("it-IT", {
+    day: "numeric",
+    month: "long"
+  });
+}
