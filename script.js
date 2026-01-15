@@ -21,3 +21,5 @@ function selectCity(city) {
   selectedCity = city;
   alert("Hai scelto " + city + " 💖");
 }
+let selectedStartDate = "";
+let selectedEndDate = "";
