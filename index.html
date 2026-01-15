@@ -51,6 +51,21 @@
     </div>
 
   </div>
+<!-- PAGINA 4: SCELTA DATA -->
+<div id="page4" style="display:none;">
+  <h1>Scegli quando partire 📅</h1>
+  <p>Il viaggio durerà 2 giorni / 1 notte</p>
+
+  <input
+    type="date"
+    id="startDate"
+    onchange="selectDate()"
+  >
+
+  <p id="datePreview" style="margin-top:20px;"></p>
+
+  <button class="back-btn" onclick="goBack()">← Indietro</button>
+</div>
 
   <script src="script.js"></script>
 </body>
