@@ -6,6 +6,7 @@ let selectedEndDate = "";
 function goToPage(page) {
   currentPage = page;
 
+  // nasconde tutte le pagine
   document.querySelectorAll(".page").forEach(p => {
     p.classList.add("hidden");
     p.classList.remove("animate");
@@ -14,10 +15,19 @@ function goToPage(page) {
   const nextPage = document.getElementById("page" + page);
   nextPage.classList.remove("hidden");
 
-  // forza il restart dell'animazione
   void nextPage.offsetWidth;
   nextPage.classList.add("animate");
+
+  document.querySelectorAll(".back-btn").forEach(btn => {
+    btn.style.display = "none";
+  });
+
+  const activeBackBtn = nextPage.querySelector(".back-btn");
+  if (activeBackBtn) {
+    activeBackBtn.style.display = "block";
+  }
 }
+
 
 function goBack() {
   if (currentPage > 1) goToPage(currentPage - 1);
