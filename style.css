@@ -99,9 +99,9 @@ button:active {
   right: 30px;
   z-index: 9999;
 
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255,255,255,0.95);
   border-radius: 20px;
-  padding: 8px 14px;
+  padding: 10px 16px;
 
   border: none;
   color: #8b1e3f;
@@ -113,8 +113,9 @@ button:active {
 
 .back-btn:hover {
   opacity: 1;
-  transform: translateX(-5px);
+  transform: translateX(-6px);
 }
+
 
 /* CALENDARIO */
 .calendar {
