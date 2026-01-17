@@ -139,3 +139,15 @@ input[type="date"] {
   opacity: 0.3;
   pointer-events: none;
 }
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #8b1e3f;
+  opacity: 0.6;
+}
+
+.weekdays span {
+  text-align: center;
+}
