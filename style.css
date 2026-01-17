@@ -146,7 +146,7 @@ button:hover {
 }
 
 .day.range::after {
-  content: "💗";
+  content: "❤️";
   position: absolute;
   bottom: -6px;
   right: -6px;
