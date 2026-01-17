@@ -95,3 +95,47 @@ input[type="date"] {
     transform: translateY(0);
   }
 }
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.month h3 {
+  color: #8b1e3f;
+  margin-bottom: 10px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day {
+  padding: 10px 0;
+  border-radius: 12px;
+  background: #fff6ee;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+.day:hover {
+  background: #f7c6d0;
+}
+
+.day.selected {
+  background: #8b1e3f;
+  color: white;
+}
+
+.day.range {
+  background: #f7c6d0;
+}
+
+.day.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
