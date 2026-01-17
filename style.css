@@ -151,3 +151,22 @@ input[type="date"] {
 .weekdays span {
   text-align: center;
 }
+.day {
+  position: relative;
+}
+
+.day.selected::after {
+  content: "❤️";
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  font-size: 16px;
+}
+
+.day.range::after {
+  content: "💗";
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  font-size: 14px;
+}
