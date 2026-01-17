@@ -5,8 +5,18 @@ let selectedEndDate = "";
 
 function goToPage(page) {
   currentPage = page;
-  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
-  document.getElementById("page" + page).classList.remove("hidden");
+
+  document.querySelectorAll(".page").forEach(p => {
+    p.classList.add("hidden");
+    p.classList.remove("animate");
+  });
+
+  const nextPage = document.getElementById("page" + page);
+  nextPage.classList.remove("hidden");
+
+  // forza il restart dell'animazione
+  void nextPage.offsetWidth;
+  nextPage.classList.add("animate");
 }
 
 function goBack() {
