@@ -1,100 +1,87 @@
 let currentPage = 1;
 let selectedCity = "";
-let selectedDate = "";
+let selectedStartDate = "";
+let selectedEndDate = "";
 
-// mostra solo una pagina
-function showPage(pageNumber) {
-  const pages = document.querySelectorAll('[id^="page"]');
-
-  pages.forEach(page => {
-    page.classList.add("hidden");
-  });
-
-  const pageToShow = document.getElementById("page" + pageNumber);
-  if (pageToShow) {
-    pageToShow.classList.remove("hidden");
-    currentPage = pageNumber;
-  }
+function goToPage(page) {
+  currentPage = page;
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.getElementById("page" + page).classList.remove("hidden");
 }
 
-// avanti
-function goToPage(pageNumber) {
-  showPage(pageNumber);
-}
-
-// indietro
 function goBack() {
-  if (currentPage > 1) {
-    showPage(currentPage - 1);
-  }
+  if (currentPage > 1) goToPage(currentPage - 1);
 }
 
-// selezione città
 function selectCity(city) {
   selectedCity = city;
-
-  document.querySelectorAll(".cities button").forEach(btn => {
-    btn.classList.remove("selected");
-  });
-
-  event.target.classList.add("selected");
-
-  // vai automaticamente al calendario
-  showPage(4);
+  goToPage(4);
 }
 
-// ===== CALENDARIO =====
-document.addEventListener("DOMContentLoaded", () => {
-  showPage(1);
-  generateCalendar();
-});
-
-function generateCalendar() {
-  const months = document.querySelectorAll(".month");
-
-  months.forEach(month => {
-    const monthIndex = parseInt(month.dataset.month);
-    const daysContainer = month.querySelector(".days");
-
-    const year = new Date().getFullYear();
-    const firstDay = new Date(year, monthIndex, 1).getDay();
-    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-
-    // spazio vuoto prima del giorno 1 (lunedi first)
-    const offset = (firstDay + 6) % 7;
-    for (let i = 0; i < offset; i++) {
-      const empty = document.createElement("div");
-      daysContainer.appendChild(empty);
-    }
-
-    for (let d = 1; d <= daysInMonth; d++) {
-      const day = document.createElement("div");
-      day.classList.add("day");
-      day.textContent = d;
-
-      day.addEventListener("click", () => {
-        document.querySelectorAll(".day").forEach(el => {
-          el.classList.remove("selected");
-        });
-
-        day.classList.add("selected");
-        selectedDate = `${d}/${monthIndex + 1}/${year}`;
-
-        document.getElementById("datePreview").textContent =
-          `Hai scelto il ${selectedDate} 💖`;
-
-        updateSummary();
-        showPage(5);
-      });
-
-      daysContainer.appendChild(day);
-    }
-  });
+function confirmDate() {
+  updateSummary();
+  goToPage(5);
 }
 
 function updateSummary() {
-  document.getElementById("summary").innerHTML = `
-    📍 Destinazione: <strong>${selectedCity}</strong><br>
-    📅 Data: <strong>${selectedDate}</strong>
-  `;
+  document.getElementById("summary").innerText =
+    `Meta: ${selectedCity}\nDal ${formatDate(selectedStartDate)} al ${formatDate(selectedEndDate)}`;
 }
+
+function formatDate(dateStr) {
+  return new Date(dateStr).toLocaleDateString("it-IT", {
+    day: "numeric",
+    month: "long"
+  });
+}
+
+/* CALENDARIO */
+document.addEventListener("DOMContentLoaded", () => {
+  const year = new Date().getFullYear();
+
+  document.querySelectorAll(".month").forEach(monthEl => {
+    const month = parseInt(monthEl.dataset.month);
+    const daysContainer = monthEl.querySelector(".days");
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month, d);
+      const div = document.createElement("div");
+      div.className = "day";
+      div.innerText = d;
+      div.dataset.date = date.toISOString().split("T")[0];
+
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      if (date < today) div.classList.add("disabled");
+
+      div.onclick = () => {
+        document.querySelectorAll(".day").forEach(el =>
+          el.classList.remove("selected","range")
+        );
+
+        selectedStartDate = div.dataset.date;
+
+        const start = new Date(selectedStartDate);
+        const end = new Date(start);
+        end.setDate(start.getDate() + 1);
+        selectedEndDate = end.toISOString().split("T")[0];
+
+        div.classList.add("selected");
+
+        document.querySelectorAll(".day").forEach(el => {
+          if (el.dataset.date === selectedEndDate) {
+            el.classList.add("range");
+          }
+        });
+
+        document.getElementById("datePreview").innerText =
+          `Dal ${formatDate(selectedStartDate)} al ${formatDate(selectedEndDate)}`;
+
+        document.getElementById("confirmDate").style.display = "inline-block";
+      };
+
+      daysContainer.appendChild(div);
+    }
+  });
+});
