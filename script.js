@@ -20,43 +20,49 @@ function selectCity(city) {
 
 document.addEventListener("DOMContentLoaded", () => {
   const year = new Date().getFullYear();
-  const daysContainer = document.querySelector(".days");
-  const daysInMonth = new Date(year, 6, 0).getDate(); // giugno
 
-  for (let d = 1; d <= daysInMonth; d++) {
-    const date = new Date(year, 5, d);
-    const div = document.createElement("div");
-    div.className = "day";
-    div.innerText = d;
-    div.dataset.date = date.toISOString().split("T")[0];
+  document.querySelectorAll(".month").forEach(monthEl => {
+    const monthIndex = parseInt(monthEl.dataset.month);
+    const daysContainer = monthEl.querySelector(".days");
+    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
 
-    div.onclick = () => {
-      document.querySelectorAll(".day").forEach(el =>
-        el.classList.remove("selected","range")
-      );
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, monthIndex, d);
+      const div = document.createElement("div");
 
-      selectedStartDate = div.dataset.date;
+      div.className = "day";
+      div.innerText = d;
+      div.dataset.date = date.toISOString().split("T")[0];
 
-      const end = new Date(date);
-      end.setDate(date.getDate() + 1);
-      selectedEndDate = end.toISOString().split("T")[0];
+      div.onclick = () => {
+        document.querySelectorAll(".day").forEach(el =>
+          el.classList.remove("selected", "range")
+        );
 
-      div.classList.add("selected");
+        selectedStartDate = div.dataset.date;
 
-      document.querySelectorAll(".day").forEach(el => {
-        if (el.dataset.date === selectedEndDate) {
-          el.classList.add("range");
-        }
-      });
+        const end = new Date(date);
+        end.setDate(date.getDate() + 1);
+        selectedEndDate = end.toISOString().split("T")[0];
 
-      document.getElementById("datePreview").innerText =
-        `Dal ${date.toLocaleDateString("it-IT")} al ${end.toLocaleDateString("it-IT")}`;
+        div.classList.add("selected");
 
-      document.getElementById("confirmBtn").classList.remove("hidden");
-      document.getElementById("summary").innerText =
-        `Meta: ${selectedCity}\n${document.getElementById("datePreview").innerText}`;
-    };
+        document.querySelectorAll(".day").forEach(el => {
+          if (el.dataset.date === selectedEndDate) {
+            el.classList.add("range");
+          }
+        });
 
-    daysContainer.appendChild(div);
-  }
+        document.getElementById("datePreview").innerText =
+          `Dal ${date.toLocaleDateString("it-IT")} al ${end.toLocaleDateString("it-IT")}`;
+
+        document.getElementById("confirmBtn").classList.remove("hidden");
+
+        document.getElementById("summary").innerText =
+          `Meta: ${selectedCity}\n${document.getElementById("datePreview").innerText}`;
+      };
+
+      daysContainer.appendChild(div);
+    }
+  });
 });
