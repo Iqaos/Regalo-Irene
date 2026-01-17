@@ -19,7 +19,7 @@
     </div>
 
     <!-- PAGINA 2 -->
-    <div id="page2" style="display:none;">
+    <div id="page2" class="hidden">
       <h1>Un piccolo messaggio 💌</h1>
       <p>
         Ho pensato molto a questo regalo.<br>
@@ -31,7 +31,7 @@
     </div>
 
     <!-- PAGINA 3 -->
-    <div id="page3" style="display:none;">
+    <div id="page3" class="hidden">
       <h1>Scegli la meta 🌍</h1>
       <div class="cities">
         <button onclick="selectCity('Roma')">Roma 🇮🇹</button>
@@ -39,43 +39,54 @@
         <button onclick="selectCity('Napoli')">Napoli 🇮🇹</button>
         <button onclick="selectCity('Milano')">Milano 🇮🇹</button>
       </div>
-      <button onclick="goToPage(4)">Continua</button>
       <button class="back-btn" onclick="goBack()">← Indietro</button>
     </div>
 
-   <!-- PAGINA 4 -->
-<div id="page4" style="display:none;">
-  <h1>Scegli quando partire 📅</h1>
-  <p>Viaggio di 2 giorni / 1 notte</p>
+    <!-- PAGINA 4 -->
+    <div id="page4" class="hidden">
+      <h1>Scegli quando partire 📅</h1>
+      <p>Viaggio di 2 giorni / 1 notte</p>
 
-  <div class="calendar">
-    <div class="month" data-month="5">
-      <h3>Giugno</h3>
-      <div class="days"></div>
+      <div class="calendar">
+
+        <!-- GIUGNO -->
+        <div class="month" data-month="5">
+          <h3>Giugno</h3>
+          <div class="weekdays">
+            <span>L</span><span>M</span><span>M</span><span>G</span>
+            <span>V</span><span>S</span><span>D</span>
+          </div>
+          <div class="days"></div>
+        </div>
+
+        <!-- LUGLIO -->
+        <div class="month" data-month="6">
+          <h3>Luglio</h3>
+          <div class="weekdays">
+            <span>L</span><span>M</span><span>M</span><span>G</span>
+            <span>V</span><span>S</span><span>D</span>
+          </div>
+          <div class="days"></div>
+        </div>
+
+        <!-- AGOSTO -->
+        <div class="month" data-month="7">
+          <h3>Agosto</h3>
+          <div class="weekdays">
+            <span>L</span><span>M</span><span>M</span><span>G</span>
+            <span>V</span><span>S</span><span>D</span>
+          </div>
+          <div class="days"></div>
+        </div>
+
+      </div>
+
+      <p id="datePreview"></p>
+      <button class="back-btn" onclick="goBack()">← Indietro</button>
     </div>
 
-    <div class="month" data-month="6">
-      <h3>Luglio</h3>
-      <div class="weekdays">
-  <span>L</span><span>M</span><span>M</span><span>G</span>
-  <span>V</span><span>S</span><span>D</span>
-</div>
-<div class="days"></div>
-
-    </div>
-
-    <div class="month" data-month="7">
-      <h3>Agosto</h3>
-      <div class="days"></div>
-    </div>
-  </div>
-
-  <p id="datePreview"></p>
-
-  <button class="back-btn" onclick="goBack()">← Indietro</button>
-</div>
     <!-- PAGINA 5 -->
-    <div id="page5" style="display:none;">
+    <div id="page5" class="hidden">
       <h1>Riepilogo 💖</h1>
       <p id="summary"></p>
       <p>Non vedo l’ora di partire con te ✨</p>
@@ -86,4 +97,4 @@
 
   <script src="script.js"></script>
 </body>
-<
+</html>
