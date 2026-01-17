@@ -21,7 +21,6 @@ body {
   width: 90%;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  animation: fadeIn 1s ease;
 }
 
 h1 {
@@ -32,7 +31,6 @@ h1 {
 p {
   color: #444;
   line-height: 1.6;
-  margin-bottom: 25px;
 }
 
 button {
@@ -54,29 +52,19 @@ button:hover {
 }
 
 .cities button {
-  display: block;
   width: 100%;
-  margin: 10px 0;
 }
 
-/* Bottone indietro */
 .back-btn {
   position: absolute;
   bottom: 20px;
   right: 20px;
   background: transparent;
-  border: none;
   color: #8b1e3f;
   font-size: 14px;
   opacity: 0.6;
-  cursor: pointer;
 }
 
-.back-btn:hover {
-  opacity: 1;
-}
-
-/* CALENDARIO */
 .calendar {
   display: flex;
   flex-direction: column;
@@ -84,22 +72,11 @@ button:hover {
   margin-top: 20px;
 }
 
-.month h3 {
-  color: #8b1e3f;
-  margin-bottom: 10px;
-}
-
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  margin-bottom: 8px;
-  font-size: 13px;
-  color: #8b1e3f;
+  font-size: 12px;
   opacity: 0.6;
-}
-
-.weekdays span {
-  text-align: center;
 }
 
 .days {
@@ -109,12 +86,10 @@ button:hover {
 }
 
 .day {
+  background: #fff6ee;
   padding: 10px 0;
   border-radius: 12px;
-  background: #fff6ee;
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.25s ease;
   position: relative;
 }
 
@@ -142,7 +117,6 @@ button:hover {
   position: absolute;
   bottom: -6px;
   right: -6px;
-  font-size: 16px;
 }
 
 .day.range::after {
@@ -150,16 +124,4 @@ button:hover {
   position: absolute;
   bottom: -6px;
   right: -6px;
-  font-size: 14px;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
