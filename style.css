@@ -95,13 +95,13 @@ button:active {
 /* BOTTONE INDIETRO */
 .back-btn {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 200px;
+  right: 100px;
   z-index: 9999;
 
   background: rgba(255,255,255,0.95);
   border-radius: 20px;
-  padding: 10px 16px;
+  padding: 18px 25px;
 
   border: none;
   color: #8b1e3f;
