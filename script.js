@@ -3,21 +3,14 @@ let selectedCity = "";
 let selectedStartDate = "";
 let selectedEndDate = "";
 
-function goToPage(pageNumber) {
-  currentPage = pageNumber;
-
-  for (let i = 1; i <= 10; i++) {
-    const page = document.getElementById("page" + i);
-    if (page) page.style.display = "none";
-  }
-
-  document.getElementById("page" + pageNumber).style.display = "block";
+function goToPage(page) {
+  currentPage = page;
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.getElementById("page" + page).classList.remove("hidden");
 }
 
 function goBack() {
-  if (currentPage > 1) {
-    goToPage(currentPage - 1);
-  }
+  if (currentPage > 1) goToPage(currentPage - 1);
 }
 
 function selectCity(city) {
@@ -25,113 +18,64 @@ function selectCity(city) {
   goToPage(4);
 }
 
-function selectDate() {
-  const input = document.getElementById("startDate");
-  const date = new Date(input.value);
-
-  if (isNaN(date)) return;
-
-  const month = date.getMonth() + 1; // 1–12
-
-  if (month < 6 || month > 8) {
-    alert("Puoi scegliere solo una data tra giugno, luglio e agosto 💛");
-    input.value = "";
-    return;
-  }
-
-  selectedStartDate = input.value;
-
-  const end = new Date(date);
-  end.setDate(date.getDate() + 1);
-  selectedEndDate = end.toISOString().split("T")[0];
-
-  document.getElementById("datePreview").innerText =
-    `Dal ${formatDate(selectedStartDate)} al ${formatDate(selectedEndDate)}`;
-
-  setTimeout(() => {
-    updateSummary();
-    goToPage(5);
-  }, 1000);
-}
-
 function updateSummary() {
   document.getElementById("summary").innerText =
-    `Meta: ${selectedCity}\nDate: ${formatDate(selectedStartDate)} – ${formatDate(selectedEndDate)}`;
+    `Meta: ${selectedCity}\nDal ${formatDate(selectedStartDate)} al ${formatDate(selectedEndDate)}`;
 }
 
 function formatDate(dateStr) {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString("it-IT", {
+  return new Date(dateStr).toLocaleDateString("it-IT", {
     day: "numeric",
-    month: "long",
-    year: "numeric"
+    month: "long"
   });
 }
-const year = new Date().getFullYear();
-let startDateObj = null;
 
-document.querySelectorAll(".month").forEach(monthEl => {
-  const monthIndex = parseInt(monthEl.dataset.month);
-  const daysContainer = monthEl.querySelector(".days");
+/* CALENDARIO */
+document.addEventListener("DOMContentLoaded", () => {
+  const year = new Date().getFullYear();
 
-  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+  document.querySelectorAll(".month").forEach(monthEl => {
+    const month = parseInt(monthEl.dataset.month);
+    const daysContainer = monthEl.querySelector(".days");
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(year, monthIndex, day);
-    const div = document.createElement("div");
-    div.classList.add("day");
-    div.innerText = day;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month, d);
+      const div = document.createElement("div");
+      div.className = "day";
+      div.innerText = d;
 
-    // disabilita date passate
-    if (date < new Date().setHours(0,0,0,0)) {
-      div.classList.add("disabled");
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      if (date < today) div.classList.add("disabled");
+
+      div.onclick = () => {
+        document.querySelectorAll(".day").forEach(el => el.classList.remove("selected","range"));
+        selectedStartDate = date.toISOString().split("T")[0];
+
+        const end = new Date(date);
+        end.setDate(date.getDate() + 1);
+        selectedEndDate = end.toISOString().split("T")[0];
+
+        div.classList.add("selected");
+
+        document.querySelectorAll(".day").forEach(el => {
+          const m = el.closest(".month").dataset.month;
+          if (parseInt(el.innerText) === end.getDate() && parseInt(m) === end.getMonth()) {
+            el.classList.add("range");
+          }
+        });
+
+        document.getElementById("datePreview").innerText =
+          `Dal ${formatDate(selectedStartDate)} al ${formatDate(selectedEndDate)}`;
+
+        setTimeout(() => {
+          updateSummary();
+          goToPage(5);
+        }, 1200);
+      };
+
+      daysContainer.appendChild(div);
     }
-
-    div.onclick = () => selectCustomDate(date, div);
-    daysContainer.appendChild(div);
-  }
+  });
 });
-
-function selectCustomDate(date, element) {
-  document.querySelectorAll(".day").forEach(d => {
-    d.classList.remove("selected", "range");
-  });
-
-  startDateObj = date;
-  selectedStartDate = formatISO(date);
-
-  const end = new Date(date);
-  end.setDate(date.getDate() + 1);
-  selectedEndDate = formatISO(end);
-
-  element.classList.add("selected");
-
-  document.querySelectorAll(".day").forEach(d => {
-    const dDate = getDateFromDay(d);
-    if (dDate && dDate.getTime() === end.getTime()) {
-      d.classList.add("range");
-    }
-  });
-
-  document.getElementById("datePreview").innerText =
-    `Dal ${formatDate(selectedStartDate)} al ${formatDate(selectedEndDate)}`;
-
-  setTimeout(() => {
-    updateSummary();
-    goToPage(5);
-  }, 1200);
-}
-
-function formatISO(date) {
-  return date.toISOString().split("T")[0];
-}
-
-function getDateFromDay(dayEl) {
-  const monthEl = dayEl.closest(".month");
-  if (!monthEl) return null;
-
-  const month = parseInt(monthEl.dataset.month);
-  const day = parseInt(dayEl.innerText);
-
-  return new Date(year, month, day);
-}
