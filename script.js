@@ -1,128 +1,100 @@
 let currentPage = 1;
 let selectedCity = "";
-let selectedStartDate = "";
-let selectedEndDate = "";
+let selectedDate = "";
 
-/* =========================
-   NAVIGAZIONE PAGINE
-========================= */
-function goToPage(page) {
-  currentPage = page;
+// mostra solo una pagina
+function showPage(pageNumber) {
+  const pages = document.querySelectorAll('[id^="page"]');
 
-  // nasconde tutte le pagine
-  document.querySelectorAll('[id^="page"]').forEach(p => {
-    p.classList.add("hidden");
+  pages.forEach(page => {
+    page.classList.add("hidden");
   });
 
-  // mostra quella giusta
-  const target = document.getElementById("page" + page);
-  if (target) target.classList.remove("hidden");
-}
-
-function goBack() {
-  if (currentPage > 1) {
-    goToPage(currentPage - 1);
+  const pageToShow = document.getElementById("page" + pageNumber);
+  if (pageToShow) {
+    pageToShow.classList.remove("hidden");
+    currentPage = pageNumber;
   }
 }
 
-/* =========================
-   SCELTA CITTÀ
-========================= */
+// avanti
+function goToPage(pageNumber) {
+  showPage(pageNumber);
+}
+
+// indietro
+function goBack() {
+  if (currentPage > 1) {
+    showPage(currentPage - 1);
+  }
+}
+
+// selezione città
 function selectCity(city) {
   selectedCity = city;
-  goToPage(4);
-}
 
-/* =========================
-   RIEPILOGO
-========================= */
-function updateSummary() {
-  document.getElementById("summary").innerText =
-    `Meta: ${selectedCity}\nDal ${formatDate(selectedStartDate)} al ${formatDate(selectedEndDate)}`;
-}
-
-function formatDate(dateStr) {
-  return new Date(dateStr).toLocaleDateString("it-IT", {
-    day: "numeric",
-    month: "long"
+  document.querySelectorAll(".cities button").forEach(btn => {
+    btn.classList.remove("selected");
   });
+
+  event.target.classList.add("selected");
+
+  // vai automaticamente al calendario
+  showPage(4);
 }
 
-/* =========================
-   CALENDARIO
-========================= */
+// ===== CALENDARIO =====
 document.addEventListener("DOMContentLoaded", () => {
-  const year = new Date().getFullYear();
-  const today = new Date();
-  today.setHours(0,0,0,0);
-
-  document.querySelectorAll(".month").forEach(monthEl => {
-    const month = parseInt(monthEl.dataset.month);
-
-    // 🔒 consenti solo giugno (5), luglio (6), agosto (7)
-    if (month < 5 || month > 7) return;
-
-    const daysContainer = monthEl.querySelector(".days");
-    daysContainer.innerHTML = "";
-
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    for (let d = 1; d <= daysInMonth; d++) {
-      const date = new Date(year, month, d);
-      const dayEl = document.createElement("div");
-
-      dayEl.className = "day";
-      dayEl.innerText = d;
-
-      if (date < today) {
-        dayEl.classList.add("disabled");
-      } else {
-        dayEl.addEventListener("click", () => selectDate(date, dayEl));
-      }
-
-      daysContainer.appendChild(dayEl);
-    }
-  });
+  showPage(1);
+  generateCalendar();
 });
 
-/* =========================
-   SELEZIONE DATA
-========================= */
-function selectDate(date, element) {
-  document.querySelectorAll(".day").forEach(d =>
-    d.classList.remove("selected", "range")
-  );
+function generateCalendar() {
+  const months = document.querySelectorAll(".month");
 
-  selectedStartDate = toISO(date);
+  months.forEach(month => {
+    const monthIndex = parseInt(month.dataset.month);
+    const daysContainer = month.querySelector(".days");
 
-  const end = new Date(date);
-  end.setDate(date.getDate() + 1);
-  selectedEndDate = toISO(end);
+    const year = new Date().getFullYear();
+    const firstDay = new Date(year, monthIndex, 1).getDay();
+    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
 
-  element.classList.add("selected");
+    // spazio vuoto prima del giorno 1 (lunedi first)
+    const offset = (firstDay + 6) % 7;
+    for (let i = 0; i < offset; i++) {
+      const empty = document.createElement("div");
+      daysContainer.appendChild(empty);
+    }
 
-  // evidenzia giorno successivo
-  document.querySelectorAll(".day").forEach(el => {
-    const monthEl = el.closest(".month");
-    if (!monthEl) return;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const day = document.createElement("div");
+      day.classList.add("day");
+      day.textContent = d;
 
-    const m = parseInt(monthEl.dataset.month);
-    const d = parseInt(el.innerText);
+      day.addEventListener("click", () => {
+        document.querySelectorAll(".day").forEach(el => {
+          el.classList.remove("selected");
+        });
 
-    if (m === end.getMonth() && d === end.getDate()) {
-      el.classList.add("range");
+        day.classList.add("selected");
+        selectedDate = `${d}/${monthIndex + 1}/${year}`;
+
+        document.getElementById("datePreview").textContent =
+          `Hai scelto il ${selectedDate} 💖`;
+
+        updateSummary();
+        showPage(5);
+      });
+
+      daysContainer.appendChild(day);
     }
   });
-
-  document.getElementById("datePreview").innerText =
-    `Dal ${formatDate(selectedStartDate)} al ${formatDate(selectedEndDate)}`;
-
-  setTimeout(() => {
-    updateSummary();
-    goToPage(5);
-  }, 1200);
 }
 
-function toISO(date) {
-  return date.toISOString().split("T")[0];
+function updateSummary() {
+  document.getElementById("summary").innerHTML = `
+    📍 Destinazione: <strong>${selectedCity}</strong><br>
+    📅 Data: <strong>${selectedDate}</strong>
+  `;
 }
