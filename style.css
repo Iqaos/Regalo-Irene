@@ -244,3 +244,20 @@ button:active {
     transform: translateY(0) scale(1);
   }
 }
+ /* MESSAGGIO FINALE */
+.final-message {
+  font-size: 22px;
+  line-height: 1.8;
+  animation: textFade 1.4s ease;
+}
+
+@keyframes textFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
