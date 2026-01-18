@@ -27,18 +27,27 @@ body {
   width: 92%;
   text-align: center;
   box-shadow: 0 25px 50px rgba(0,0,0,0.18);
-  animation: pageEnter 0.7s ease;
+}
+
+/* 🔧 FIX CHIAVE: le pagine restano DENTRO il container */
+.page {
+  position: relative;
+  width: 100%;
 }
 
 /* ANIMAZIONE PAGINA */
+.page.animate {
+  animation: pageEnter 0.6s ease both;
+}
+
 @keyframes pageEnter {
   from {
     opacity: 0;
-    transform: scale(0.96) translateY(20px);
+    transform: translateY(20px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -92,16 +101,16 @@ button:active {
   margin: 12px 0;
 }
 
-/* BOTTONE INDIETRO */
+/* 🔧 FIX: BACK BUTTON DENTRO IL CONTAINER */
 .back-btn {
-  position: fixed;
-  bottom: 1px;
-  right: 1px;
-  z-index: 9999;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
 
   background: rgba(255,255,255,0.95);
-  border-radius: 10px;
-  padding: 18px 25px;
+  border-radius: 12px;
+  padding: 12px 18px;
 
   border: none;
   color: #8b1e3f;
@@ -115,7 +124,6 @@ button:active {
   opacity: 1;
   transform: translateX(-6px);
 }
-
 
 /* CALENDARIO */
 .calendar {
@@ -193,13 +201,6 @@ button:active {
   background: #f7c6d0;
 }
 
-/* ANIMAZIONE CUORE */
-@keyframes pop {
-  0% { transform: scale(0.8); }
-  70% { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-
 /* CUORI */
 .day.selected::after {
   content: "❤️";
@@ -218,33 +219,19 @@ button:active {
   font-size: 15px;
 }
 
-/* CUORE CHE BATTE */
+@keyframes pop {
+  0% { transform: scale(0.8); }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
 @keyframes heartBeat {
   0% { transform: scale(0); opacity: 0; }
   50% { transform: scale(1.3); opacity: 1; }
   100% { transform: scale(1); }
 }
 
-/* BOTTONE CONFERMA */
-#confirmBtn {
-  margin-top: 25px;
-  font-weight: 600;
-}
-.page.animate {
-  animation: pageEnter 0.6s ease both;
-}
-
-@keyframes pageEnter {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
- /* MESSAGGIO FINALE */
+/* MESSAGGIO FINALE */
 .final-message {
   font-size: 22px;
   line-height: 1.8;
