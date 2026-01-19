@@ -104,9 +104,9 @@ button:active {
 /* BACK BUTTON — FIX UNICO */
 .back-btn {
   position: absolute;   /* <-- ERA FIXED, ORA CORRETTO */
-  bottom: 25px;
-  right: 25px;
-  z-index: 20;
+  bottom: 0px;
+  right: 0px;
+  z-index: 0;
 
   background: rgba(255,255,255,0.95);
   border-radius: 12px;
