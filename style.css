@@ -104,9 +104,9 @@ button:active {
 /* BACK BUTTON */
 .back-btn {
   position: fixed;  
-  bottom: 0px;
-  right: 0px;
-  z-index: 0;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  right: 20px;
+  z-index: 1000;
 
   background: rgba(255,255,255,0.95);
   border-radius: 12px;
