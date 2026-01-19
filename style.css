@@ -104,7 +104,7 @@ button:active {
 /* BACK BUTTON */
 .back-btn {
   position: fixed;  
-  bottom: calc(20px + env(safe-area-inset-bottom));
+  bottom: -65px;
   right: 20px;
   z-index: 1000;
 
